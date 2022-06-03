@@ -23,16 +23,17 @@
         <v-tabs fixed-tabs v-model="activeTab">
           <v-tab key="calendar">
             <slot name="dateIcon">
-              <v-icon>event</v-icon>
+              <v-icon>mdi-calendar</v-icon>
             </slot>
           </v-tab>
           <v-tab key="timer" :disabled="dateSelected">
             <slot name="timeIcon">
-              <v-icon>access_time</v-icon>
+              <v-icon>mdi-clock</v-icon>
             </slot>
           </v-tab>
           <v-tab-item key="calendar">
-            <v-date-picker v-model="date" v-bind="datePickerProps" @input="showTimePicker" full-width></v-date-picker>
+            <v-date-picker v-model="date" v-bind="datePickerProps" @input="showTimePicker" no-title scrollable full-width>
+            </v-date-picker>
           </v-tab-item>
           <v-tab-item key="timer">
             <v-time-picker
@@ -40,6 +41,7 @@
               class="v-time-picker-custom"
               v-model="time"
               v-bind="timePickerProps"
+              no-title
               full-width
             ></v-time-picker>
           </v-tab-item>
@@ -48,8 +50,8 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <slot name="actions" :parent="this">
-          <v-btn color="grey lighten-1" text @click.native="clearHandler">{{ clearText }}</v-btn>
-          <v-btn color="green darken-1" text @click="okHandler">{{ okText }}</v-btn>
+          <v-btn v-if="!disableClear" color="grey lighten-1" text @click.native="clearHandler">{{ clearText }}</v-btn>
+          <v-btn color="blue darken-1" text @click="okHandler">{{ okText }}</v-btn>
         </slot>
       </v-card-actions>
     </v-card>
@@ -116,6 +118,10 @@ export default {
     },
     timePickerProps: {
       type: Object
+    },
+    disableClear: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
